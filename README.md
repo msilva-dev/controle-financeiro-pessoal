@@ -14,39 +14,21 @@ Isso garante que o coração da aplicação seja testável de forma independente
 
 ## 3. Modelo de Domínio
 
-O núcleo do sistema é modelado com foco em encapsulamento e regras de negócio explícitas. As principais entidades são:
+Nosso domínio é modelado seguindo os princípios da Programação Orientada a Objetos, com foco em encapsulamento, herança e baixo acoplamento. Para facilitar a compreensão, a arquitetura do domínio é apresentada em diagramas focados, cada um contando uma parte específica da história do design.
 
-```mermaid
-classDiagram
-    class Usuario {
-        -UUID id
-        -String nome
-        -String email
-    }
-    class Conta {
-        -UUID id
-        -String nome
-        -BigDecimal saldo
-        +depositar(BigDecimal valor)
-        +sacar(BigDecimal valor)
-    }
-    class Transacao {
-        <<record>>
-        -UUID id
-        -String descricao
-        -BigDecimal valor
-        -TipoTransacao tipo
-        -LocalDateTime data
-    }
-    class TipoTransacao {
-        <<enumeration>>
-        RECEITA
-        DESPESA
-    }
+### Diagrama 1: A Arquitetura de `Conta`
 
-    Usuario "1" -- "N" Conta : possui
-    Conta "1" -- "N" Transacao : contém
-```
+Este diagrama ilustra como usamos Interfaces, Classes Abstratas e Herança para criar um modelo de contas flexível, reutilizável e especializado. Ele responde à pergunta: "Como modelamos os diferentes tipos de contas que um usuário pode ter?".
+
+![Diagrama da Arquitetura de Contas](./docs/images/arquitetura-contas.jpg)
+
+### Diagrama 2: Relacionamentos do Domínio Principal
+
+Este diagrama mostra a visão macro de como as entidades centrais do sistema se conectam através de associações. Ele responde à pergunta: "Como um usuário, suas contas e seu histórico de transações se relacionam?".
+
+*(Nota: Este diagrama será finalizado após a modelagem da classe `Transacao`)*
+
+![Diagrama de Relacionamentos do Domínio](./docs/images/relacionamentos-dominio.jpg)
 
 ## 4. Tecnologias Utilizadas
 
