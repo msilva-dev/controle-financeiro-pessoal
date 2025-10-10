@@ -26,8 +26,6 @@ Este diagrama ilustra como usamos Interfaces, Classes Abstratas e Herança para 
 
 Este diagrama mostra a visão macro de como as entidades centrais do sistema se conectam através de associações. Ele responde à pergunta: "Como um usuário, suas contas e seu histórico de transações se relacionam?".
 
-*(Nota: Este diagrama será finalizado após a modelagem da classe `Transacao`)*
-
 ![Diagrama de Relacionamentos do Domínio](./docs/images/relacionamentos-dominio.jpg)
 
 ## 4. Tecnologias Utilizadas
