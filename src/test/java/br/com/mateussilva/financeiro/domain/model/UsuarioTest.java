@@ -33,6 +33,21 @@ class UsuarioTest {
         );
     }
 
+    private void deveLancarErroAoCriarUsuario(String nome, String email, String msgEsperada) {
+        assertThatThrownBy(() -> UsuarioBuilder.umUsuario()
+                .comNome(nome)
+                .comEmail(email)
+                .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(msgEsperada);
+    }
+
+    private void deveLancarErroAoAlterar(Runnable acao, String msgEsperada) {
+        assertThatThrownBy(acao::run)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(msgEsperada);
+    }
+
     @Test
     @DisplayName("Deve criar um usuário com dados válidos com sucesso")
     void deveCriarUmUsuarioComDadosValidos() {
@@ -49,19 +64,16 @@ class UsuarioTest {
     @ParameterizedTest
     @MethodSource("nomesInvalidos")
     @DisplayName("Não deve criar um usuário com nome inválido")
-    void naoDeveCriarUmUsuarioComNomeNulo(String nomeInvalido, String msgEsperada) {
-        assertThatThrownBy(() -> UsuarioBuilder.umUsuario().comNome(nomeInvalido).build())
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(msgEsperada);
+    void naoDeveCriarUmUsuarioComNomeInvalido(String nomeInvalido, String msgEsperada) {
+        deveLancarErroAoCriarUsuario(nomeInvalido, "mateus@valido.com", msgEsperada);
     }
 
     @Test
     @DisplayName("Deve alterar o nome de usuário")
     void deveAlterarNomeDeUsuario() {
         Usuario usuario = UsuarioBuilder.umUsuario().comNome("Maria Alves").build();
-        String novoNome = "Mateus Silva";
-        usuario.alterarNome(novoNome);
-        assertThat(usuario.getNome()).isEqualTo(novoNome);
+        usuario.alterarNome("Mateus Silva");
+        assertThat(usuario.getNome()).isEqualTo("Mateus Silva");
     }
 
     @ParameterizedTest
@@ -69,28 +81,22 @@ class UsuarioTest {
     @DisplayName("Não deve alterar nome de usuário com nome inválido")
     void naoDeveAlterarNomeDeUsuarioComNomeInvalido(String nomeInvalido, String msgEsperada) {
         Usuario usuario = UsuarioBuilder.umUsuario().build();
-        assertThatThrownBy(() -> usuario.alterarNome(nomeInvalido))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(msgEsperada);
-
+        deveLancarErroAoAlterar(() -> usuario.alterarNome(nomeInvalido), msgEsperada);
     }
 
     @ParameterizedTest
     @MethodSource("emailsInvalidos")
     @DisplayName("Não deve criar um usuário com email inválido")
     void naoDeveCriarUmUsuarioComEmailNulo(String emailInvalido, String msgEsperada) {
-        assertThatThrownBy(() -> UsuarioBuilder.umUsuario().comEmail(emailInvalido).build())
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(msgEsperada);
+        deveLancarErroAoCriarUsuario("Mateus Silva", emailInvalido, msgEsperada);
     }
 
     @Test
     @DisplayName("Deve alterar o email de usuário")
     void deveAlterarEmailDeUsuario() {
         Usuario usuario = UsuarioBuilder.umUsuario().comEmail("maria@valido.com").build();
-        String novoEmail = "mateus@teste.com.br";
-        usuario.alterarEmail(novoEmail);
-        assertThat(usuario.getEmail()).isEqualTo(novoEmail);
+        usuario.alterarEmail("mateus@teste.com.br");
+        assertThat(usuario.getEmail()).isEqualTo("mateus@teste.com.br");
     }
 
     @ParameterizedTest
@@ -98,11 +104,7 @@ class UsuarioTest {
     @DisplayName("Não deve alterar email de usuário com email inválido")
     void naoDeveAlterarEmailDeUsuarioComEmailInvalido(String emailInvalido, String msgEsperada) {
         Usuario usuario = UsuarioBuilder.umUsuario().build();
-        assertThatThrownBy(() -> usuario.alterarEmail(emailInvalido))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(msgEsperada);
-
+        deveLancarErroAoAlterar(() -> usuario.alterarEmail(emailInvalido), msgEsperada);
     }
-
 
 }
