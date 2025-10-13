@@ -1,6 +1,8 @@
-package br.com.mateussilva.financeiro.domain.model;
+package br.com.mateussilva.financeiro.domain.model.teste;
 
 import br.com.mateussilva.financeiro.domain.model.builder.UsuarioBuilder;
+import br.com.mateussilva.financeiro.domain.model.usuario.Usuario;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,6 +16,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class UsuarioTest {
 
+    private Usuario usuario;
+
+    @BeforeEach
+    void setup() {
+        usuario = UsuarioBuilder.umUsuario()
+                .comNome("Mateus Silva")
+                .comEmail("mateus@valido.com")
+                .build();
+    }
+
     static Stream<Arguments> nomesInvalidos() {
         return Stream.of (
                 Arguments.of(null, Usuario.MSG_ERRO_NOME_INVALIDO),
@@ -21,7 +33,6 @@ class UsuarioTest {
                 Arguments.of("   ", Usuario.MSG_ERRO_NOME_INVALIDO)
         );
     }
-
     static Stream<Arguments> emailsInvalidos() {
         return Stream.of (
                 Arguments.of(null, Usuario.MSG_ERRO_EMAIL_INVALIDO),
@@ -41,7 +52,6 @@ class UsuarioTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(msgEsperada);
     }
-
     private void deveLancarErroAoAlterar(Runnable acao, String msgEsperada) {
         assertThatThrownBy(acao::run)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -49,61 +59,52 @@ class UsuarioTest {
     }
 
     @Test
-    @DisplayName("Deve criar um usuário com dados válidos com sucesso")
+    @DisplayName("Dado dados válidos, quando criar usuário, então deve criar usuário com sucesso")
     void deveCriarUmUsuarioComDadosValidos() {
-        Usuario usuario = UsuarioBuilder.umUsuario()
-                .comNome("Mateus")
-                .comEmail("mateus@valido.com")
-                .build();
-
         assertThat(usuario.getId()).isNotNull();
-        assertThat(usuario.getNome()).isEqualTo("Mateus");
+        assertThat(usuario.getNome()).isEqualTo("Mateus Silva");
         assertThat(usuario.getEmail()).isEqualTo("mateus@valido.com");
     }
 
     @ParameterizedTest
     @MethodSource("nomesInvalidos")
-    @DisplayName("Não deve criar um usuário com nome inválido")
+    @DisplayName("Dado nome inválido, quando criar usuário, então deve lançar exceção")
     void naoDeveCriarUmUsuarioComNomeInvalido(String nomeInvalido, String msgEsperada) {
         deveLancarErroAoCriarUsuario(nomeInvalido, "mateus@valido.com", msgEsperada);
     }
 
     @Test
-    @DisplayName("Deve alterar o nome de usuário")
+    @DisplayName("Dado usuário existente, quando alterar nome, então nome deve ser atualizado")
     void deveAlterarNomeDeUsuario() {
-        Usuario usuario = UsuarioBuilder.umUsuario().comNome("Maria Alves").build();
-        usuario.alterarNome("Mateus Silva");
-        assertThat(usuario.getNome()).isEqualTo("Mateus Silva");
+        usuario.alterarNome("Maria Alves");
+        assertThat(usuario.getNome()).isEqualTo("Maria Alves");
     }
 
     @ParameterizedTest
     @MethodSource("nomesInvalidos")
-    @DisplayName("Não deve alterar nome de usuário com nome inválido")
+    @DisplayName("Dado nome inválido, quando alterar nome, então deve lançar exceção")
     void naoDeveAlterarNomeDeUsuarioComNomeInvalido(String nomeInvalido, String msgEsperada) {
-        Usuario usuario = UsuarioBuilder.umUsuario().build();
         deveLancarErroAoAlterar(() -> usuario.alterarNome(nomeInvalido), msgEsperada);
     }
 
     @ParameterizedTest
     @MethodSource("emailsInvalidos")
-    @DisplayName("Não deve criar um usuário com email inválido")
+    @DisplayName("Dado email inválido, quando criar usuário, então deve lançar exceção")
     void naoDeveCriarUmUsuarioComEmailNulo(String emailInvalido, String msgEsperada) {
         deveLancarErroAoCriarUsuario("Mateus Silva", emailInvalido, msgEsperada);
     }
 
     @Test
-    @DisplayName("Deve alterar o email de usuário")
+    @DisplayName("Dado usuário existente, quando alterar email, então email deve ser atualizado")
     void deveAlterarEmailDeUsuario() {
-        Usuario usuario = UsuarioBuilder.umUsuario().comEmail("maria@valido.com").build();
         usuario.alterarEmail("mateus@teste.com.br");
         assertThat(usuario.getEmail()).isEqualTo("mateus@teste.com.br");
     }
 
     @ParameterizedTest
     @MethodSource("emailsInvalidos")
-    @DisplayName("Não deve alterar email de usuário com email inválido")
+    @DisplayName("Dado email inválido, quando alterar email, então deve lançar exceção")
     void naoDeveAlterarEmailDeUsuarioComEmailInvalido(String emailInvalido, String msgEsperada) {
-        Usuario usuario = UsuarioBuilder.umUsuario().build();
         deveLancarErroAoAlterar(() -> usuario.alterarEmail(emailInvalido), msgEsperada);
     }
 
