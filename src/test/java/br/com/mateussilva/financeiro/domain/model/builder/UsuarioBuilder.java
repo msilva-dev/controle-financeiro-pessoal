@@ -1,6 +1,6 @@
 package br.com.mateussilva.financeiro.domain.model.builder;
 
-import br.com.mateussilva.financeiro.domain.model.Usuario;
+import br.com.mateussilva.financeiro.domain.model.usuario.Usuario;
 
 public class UsuarioBuilder {
 
