@@ -1,7 +1,10 @@
-package br.com.mateussilva.financeiro.domain.model;
+package br.com.mateussilva.financeiro.domain.model.usuario;
 
+import br.com.mateussilva.financeiro.domain.model.conta.Conta;
 import br.com.mateussilva.financeiro.domain.util.ValidadorUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Usuario {
@@ -14,7 +17,7 @@ public class Usuario {
     private String nome;
     private String email;
 
-    //private final List<Conta> contas;
+    private final List<Conta> contas;
 
 
     public Usuario(String nome, String email) {
@@ -24,6 +27,8 @@ public class Usuario {
         this.id = UUID.randomUUID();
         this.nome = nome;
         this.email = email;
+
+        this.contas = new ArrayList<>();
     }
 
 
