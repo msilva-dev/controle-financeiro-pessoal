@@ -45,7 +45,7 @@ public class ContaBancaria extends Conta{
         if (conta == null || conta.trim().isBlank() || !conta.matches("\\d+")) {
             throw new IllegalArgumentException(MSG_ERRO_CONTA_INVALIDO);
         }
-        if (tipo != TipoConta.CORRENTE && tipo != TipoConta.POUPANCA) {
+        if (tipo == null) {
                 throw new IllegalArgumentException(MSG_ERRO_TIPO_CONTA_INVALIDO);
         }
     }
