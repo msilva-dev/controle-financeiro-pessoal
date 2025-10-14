@@ -1,11 +1,8 @@
-package br.com.mateussilva.financeiro.domain.model.teste;
+package br.com.mateussilva.financeiro.domain.model.conta;
 
-import br.com.mateussilva.financeiro.domain.model.conta.Conta;
-import br.com.mateussilva.financeiro.domain.model.conta.ContaBancaria;
-import br.com.mateussilva.financeiro.domain.model.conta.TipoConta;
-import br.com.mateussilva.financeiro.domain.model.usuario.Usuario;
 import br.com.mateussilva.financeiro.domain.model.builder.ContaBancariaBuilder;
 import br.com.mateussilva.financeiro.domain.model.builder.UsuarioBuilder;
+import br.com.mateussilva.financeiro.domain.model.usuario.Usuario;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -110,7 +107,7 @@ class ContaBancariaTest {
 
 
     @Test
-    @DisplayName("Dado uma conta com saldo zero, deve inicializar corretamente todos os campos")
+    @DisplayName("Dado conta com saldo zero, quando criar conta, então deve inicializar todos os campos")
     void deveCriarContaBancariaComSaldoZero() {
         ContaBancaria conta = ContaBancariaBuilder.umaContaBancaria()
                 .comNome("Conta Corrente Itaú")
@@ -132,27 +129,27 @@ class ContaBancariaTest {
 
     @ParameterizedTest
     @MethodSource("nomesContasInvalidas")
-    @DisplayName("Dado um nome inválido, não deve criar conta bancária")
+    @DisplayName("Dado nome inválido, quando criar conta, então deve lançar exceção")
     void naoDeveCriarContaBancariaComNomeInvalido(String nomeInvalido, String msgEsperada) {
         deveLancarErroAoCriarContaBancaria(nomeInvalido, "1234", "123456", msgEsperada);
     }
 
     @ParameterizedTest
     @MethodSource("numerosAgenciaInvalidas")
-    @DisplayName("Dado uma agência inválida, não deve criar conta bancária")
+    @DisplayName("Dado agência inválida, quando criar conta, então deve lançar exceção")
     void naoDeveCriarContaBancariaComAgenciaInvalida(String agenciaInvalida, String msgEsperada) {
         deveLancarErroAoCriarContaBancaria("Conta Corrente Itaú", agenciaInvalida, "123456", msgEsperada);
     }
 
     @ParameterizedTest
     @MethodSource("numerosContasInvalidas")
-    @DisplayName("Dado um número de conta inválido, não deve criar conta bancária")
+    @DisplayName("Dado número de conta inválido, quando criar conta, então deve lançar exceção")
     void naoDeveCriarContaBancariaComContaInvalida(String contaInvalida, String msgEsperada) {
         deveLancarErroAoCriarContaBancaria("Conta Corrente Itaú", "1234", contaInvalida, msgEsperada);
     }
 
     @Test
-    @DisplayName("Dado um tipo de conta nulo, deve lançar exceção ao criar conta")
+    @DisplayName("Dado tipo de conta nulo, quando criar conta, então deve lançar exceção")
     void naoDeveCriarContaBancariaComTipoNulo() {
         assertThatThrownBy(() -> ContaBancariaBuilder.umaContaBancaria().comTipo(null).build())
                 .isInstanceOf(IllegalArgumentException.class)
@@ -161,7 +158,7 @@ class ContaBancariaTest {
 
     @ParameterizedTest
     @MethodSource("valoresValidosParaOperacoes")
-    @DisplayName("Dado um valor válido, deve realizar depósito corretamente")
+    @DisplayName("Dado valor válido, quando depositar, então deve atualizar saldo corretamente")
     void deveDepositarUmValorValido(BigDecimal valorValido) {
         ContaBancaria conta = novaContaComSaldo(BigDecimal.ZERO);
         conta.depositar(valorValido);
@@ -170,7 +167,7 @@ class ContaBancariaTest {
 
     @ParameterizedTest
     @MethodSource("valoresValidosParaOperacoes")
-    @DisplayName("Dado um valor válido, deve realizar saque corretamente")
+    @DisplayName("Dado valor válido, quando sacar, então deve atualizar saldo corretamente")
     void deveSacarUmValorValido(BigDecimal valorValido) {
         BigDecimal saldoInicial = new BigDecimal(5000);
         ContaBancaria conta = novaContaComSaldo(saldoInicial);
@@ -180,7 +177,7 @@ class ContaBancariaTest {
 
     @ParameterizedTest
     @MethodSource("valoresInvalidosParaOperacoes")
-    @DisplayName("Dado um valor inválido (nulo, negativo ou zero), deve lançar exceção ao depositar")
+    @DisplayName("Dado valor inválido, quando depositar, então deve lançar exceção")
     void deveLancarExcecaoAoDepositarValorInvalido(BigDecimal valorInvalido, String msgEsperada) {
         ContaBancaria conta = novaContaComSaldo(BigDecimal.ZERO);
         deveLancarErroAoRealizarOperacoes(() -> conta.depositar(valorInvalido), msgEsperada);
@@ -188,7 +185,7 @@ class ContaBancariaTest {
 
     @ParameterizedTest
     @MethodSource("valoresInvalidosParaOperacoes")
-    @DisplayName("Dado um valor inválido (nulo, negativo ou zero), deve lançar exceção ao sacar")
+    @DisplayName("Dado valor inválido, quando sacar, então deve lançar exceção")
     void deveLancarExcecaoAoSacarValorInvalido(BigDecimal valorInvalido, String msgEsperada) {
         ContaBancaria conta = novaContaComSaldo(BigDecimal.ZERO);
         deveLancarErroAoRealizarOperacoes(() -> conta.sacar(valorInvalido), msgEsperada);
@@ -196,7 +193,7 @@ class ContaBancariaTest {
 
     @ParameterizedTest
     @MethodSource("valoresInvalidosParaSaque")
-    @DisplayName("Dado um valor maior que o saldo, deve lançar exceção ao sacar")
+    @DisplayName("Dado valor maior que o saldo, quando sacar, então deve lançar exceção")
     void deveLancarExcecaoAoSacarValorMaiorQueSaldo(BigDecimal valorSaque, String msgEsperada) {
         ContaBancaria conta = novaContaComSaldo(new BigDecimal(100));
         deveLancarErroAoRealizarOperacoes(() -> conta.sacar(valorSaque), msgEsperada);
