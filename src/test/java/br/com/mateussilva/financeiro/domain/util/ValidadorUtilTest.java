@@ -1,13 +1,17 @@
 package br.com.mateussilva.financeiro.domain.util;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class ValidadorUtilTest {
 
@@ -44,6 +48,18 @@ class ValidadorUtilTest {
     @DisplayName("Dado email inválido, quando validar, deve retornar false")
     void naoDeveValidarEmail(String emailInvalido) {
         assertThat(ValidadorUtil.isEmailValido(emailInvalido)).isFalse();
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao tentar instanciar a classe utilitária")
+    void deveLancarExcecaoAoInstanciar() {
+        assertThatThrownBy(() -> {
+            Constructor<ValidadorUtil> constructor = ValidadorUtil.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            constructor.newInstance();
+        })
+                .isInstanceOf(InvocationTargetException.class)
+                .hasCauseInstanceOf(UnsupportedOperationException.class);
     }
 
 }

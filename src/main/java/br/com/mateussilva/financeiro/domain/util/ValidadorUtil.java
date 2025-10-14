@@ -8,6 +8,12 @@ public class ValidadorUtil {
     private static final String REGEX_EMAIL = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private static final Pattern PADRAO_EMAIL = Pattern.compile(REGEX_EMAIL);
 
+    public static final String MSG_ERRO_INSTANCIACAO = "EERO: Esta é uma classe de utilidade e não pode ser instanciada.";
+
+    private ValidadorUtil() {
+        throw new UnsupportedOperationException(MSG_ERRO_INSTANCIACAO);
+    }
+
     public static boolean isEmailValido(String email) {
         if (email == null) {
             return false;
