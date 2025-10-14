@@ -1,7 +1,6 @@
-package br.com.mateussilva.financeiro.domain.model.teste;
+package br.com.mateussilva.financeiro.domain.model.usuario;
 
 import br.com.mateussilva.financeiro.domain.model.builder.UsuarioBuilder;
-import br.com.mateussilva.financeiro.domain.model.usuario.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
