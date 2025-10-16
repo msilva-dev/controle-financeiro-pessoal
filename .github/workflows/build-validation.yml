@@ -1,34 +1,29 @@
-# Nome do workflow que aparecerá na aba "Actions" do GitHub
 name: Java CI Build Validation
 
-# Define os gatilhos (eventos) que disparam este workflow
 on:
-  # Dispara quando houver um push para a branch main
   push:
     branches: [ "main" ]
-  # Dispara quando um Pull Request for aberto ou atualizado para a branch main
   pull_request:
     branches: [ "main" ]
 
-# Define os "trabalhos" (jobs) que serão executados
 jobs:
   build:
-    # O tipo de máquina virtual que será usada para executar o job
     runs-on: ubuntu-latest
 
-    # Os passos que compõem o job
     steps:
-      # 1. Baixa o código do seu repositório para a máquina virtual
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Configura o ambiente Java (JDK 21) na máquina virtual
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      # 3. Executa o build e os testes com o Maven
-      - name: Build and test with Maven
-        run: mvn -B package --file pom.xml
+      - name: Build, test and generate coverage report
+        run: mvn -B clean verify
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

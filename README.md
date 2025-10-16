@@ -1,5 +1,7 @@
 # Sistema de Controle Financeiro Pessoal
 
+[![codecov](https://codecov.io/gh/msilva-dev/controle-financeiro-pessoal/graph/badge.svg?token=TFTYPY559U)](https://codecov.io/gh/msilva-dev/controle-financeiro-pessoal)
+
 **Status do Projeto:** `Em Desenvolvimento` 🚧
 
 ## 1. Visão Geral
