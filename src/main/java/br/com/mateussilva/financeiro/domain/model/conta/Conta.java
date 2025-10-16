@@ -1,5 +1,7 @@
 package br.com.mateussilva.financeiro.domain.model.conta;
 
+import br.com.mateussilva.financeiro.domain.model.transacao.DadosNovaTransacao;
+import br.com.mateussilva.financeiro.domain.model.transacao.TipoTransacao;
 import br.com.mateussilva.financeiro.domain.model.transacao.Transacao;
 import br.com.mateussilva.financeiro.domain.model.usuario.Usuario;
 
@@ -37,14 +39,16 @@ public abstract class Conta implements ContaOperacoes{
 
 
     @Override
-    public void sacar(BigDecimal valor) {
-        validarSaque(valor);
-        this.saldo = this.saldo.subtract(valor);
+    public void sacar(DadosNovaTransacao dados) {
+        validarSaque(dados.valor());
+        this.saldo = this.saldo.subtract(dados.valor());
+        registrarTransacao(dados, TipoTransacao.DESPESA);
     }
     @Override
-    public void depositar(BigDecimal valor) {
-        validarDeposito(valor);
-        this.saldo = this.saldo.add(valor);
+    public void depositar(DadosNovaTransacao dados) {
+        validarDeposito(dados.valor());
+        this.saldo = this.saldo.add(dados.valor());
+        registrarTransacao(dados, TipoTransacao.RECEITA);
     }
     @Override
     public List<Transacao> getExtrato() {
@@ -96,6 +100,14 @@ public abstract class Conta implements ContaOperacoes{
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException(MSG_VALOR_INVALIDO);
         }
+    }
+    private void registrarTransacao(DadosNovaTransacao dados, TipoTransacao tipo) {
+        Transacao transacao = new Transacao(
+                dados.descricao(),
+                dados.valor(),
+                tipo,
+                dados.beneficiario());
+        this.transacoes.add(transacao);
     }
 
 }
