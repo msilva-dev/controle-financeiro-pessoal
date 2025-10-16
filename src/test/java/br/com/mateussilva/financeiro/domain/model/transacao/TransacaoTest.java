@@ -100,6 +100,12 @@ class TransacaoTest {
     }
 
     @Test
+    @DisplayName("Dado um valor nulo, quando criar transação, então deve lançar uma exceção")
+    void naoDeveCriarTransacaoComValorNulo() {
+        deveLancarErroAoCriarTransacao("Lazer em familia no McDonald's", null, TipoTransacao.DESPESA, "McDonald's", MSG_VALOR_INVALIDO);
+    }
+
+    @Test
     @DisplayName("Dado um tipo nulo, quando criar transação, então deve lançar uma exceção")
     void naoDeveCriarTransacaoComTipoNulo() {
         deveLancarErroAoCriarTransacao("Desc Válida", BigDecimal.TEN, null, "Benef Válido", MSG_TIPO_TRANSACAO_INVALIDA);
