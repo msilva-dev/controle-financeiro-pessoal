@@ -33,6 +33,11 @@
             <version>4.0.0-M1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.14</version>
+        </dependency>
     </dependencies>
 
 </project>
