@@ -41,6 +41,12 @@ public class Usuario {
         validarEmail(novoEmail);
         this.email = novoEmail;
     }
+    public void adicionarConta(Conta conta) {
+        if (conta == null) {
+            throw new IllegalArgumentException("ERRO: Uma conta válida deve ser informada.");
+        }
+        this.contas.add(conta);
+    }
 
 
     public UUID getId() {
@@ -69,11 +75,4 @@ public class Usuario {
             throw new IllegalArgumentException(MSG_ERRO_EMAIL_FORMATO);
         }
     }
-    public void adicionarConta(Conta conta) {
-        if (conta == null) {
-            throw new IllegalArgumentException("ERRO: Uma conta válida deve ser informada.");
-        }
-        this.contas.add(conta);
-    }
-
 }
