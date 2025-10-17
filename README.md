@@ -2,6 +2,7 @@
 [![Cobertura de Testes](https://img.shields.io/codecov/c/github/msilva-dev/controle-financeiro-pessoal?label=Cobertura%20de%20Testes)](https://codecov.io/gh/msilva-dev/controle-financeiro-pessoal)
 
 **Versão Atual:** `0.1.0`
+
 **Status do Projeto:** `Core do Domínio Estável ✅`
 
 [Veja o Histórico de Versões completo no CHANGELOG.md](CHANGELOG.md)
