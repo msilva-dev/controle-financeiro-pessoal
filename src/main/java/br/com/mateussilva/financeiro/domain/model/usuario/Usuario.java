@@ -4,6 +4,7 @@ import br.com.mateussilva.financeiro.domain.model.conta.Conta;
 import br.com.mateussilva.financeiro.domain.util.ValidadorUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,7 +52,9 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
-
+    public List<Conta> getContas() {
+        return Collections.unmodifiableList(this.contas);
+    }
 
     private void validarNome(String nome) {
         if (nome == null || nome.trim().isBlank()) {
@@ -65,6 +68,12 @@ public class Usuario {
         if (!ValidadorUtil.isEmailValido(email)) {
             throw new IllegalArgumentException(MSG_ERRO_EMAIL_FORMATO);
         }
+    }
+    public void adicionarConta(Conta conta) {
+        if (conta == null) {
+            throw new IllegalArgumentException("ERRO: Uma conta válida deve ser informada.");
+        }
+        this.contas.add(conta);
     }
 
 }
